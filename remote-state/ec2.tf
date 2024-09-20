@@ -1,6 +1,17 @@
+resource "aws_instance" "backend" {
+    
+    ami = "ami-o9c813fb71547fc4f"
+    instance_type = "t3.micro"
+    vpc_security_group_ids = [aws_security_group.allow_ssh_terraform.id]
+    tags = {
+        name = terraform
+    }
+
+}        
+
 resource "aws_security_group" "allow_ssh_terraform" {
-  name        = var.sg_name
-  description = var.sg_description
+  name        = "allow_sshh" #allow_sshh is already there in my account
+  description = "allow port number 22 for SSH access"
   
   #usually we allow everything in egress
   #block
@@ -19,16 +30,8 @@ resource "aws_security_group" "allow_ssh_terraform" {
       cidr_blocks      = ["0.0.0.0/0"] #allow from everyone
       ipv6_cidr_blocks = ["::/0"]
     }
-    tags = var.tags
-    
-  }
 
-resource "aws_instance" "terraform" {
-
-  ami = "var.ami_id" # left side and right side names need not to be same
-  instance_type = "t3.micro"
-  vpc_security_group_ids = [aws_security_group.allow_ssh_terraform.id]
-  tags = {
-    Name = "terraform"
-  }
+    tags = { 
+       name = "allow-sshh"
+    }  
 }
